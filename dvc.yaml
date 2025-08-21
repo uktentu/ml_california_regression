@@ -1,0 +1,23 @@
+stages:
+  preprocess:
+    cmd: python -c "from src.prep_data import load_data; load_data('data/cal_housing.csv')"
+    deps:
+      - data/cal_housing.csv
+      - src/prep_data.py
+    outs:
+      - data/cal_housing.csv
+  train:
+    cmd: python src/train.py --model rf --data data/cal_housing.csv --models_dir models
+    deps:
+      - src/train.py
+      - src/prep_data.py
+      - data/cal_housing.csv
+    outs:
+      - models/model.pkl
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/model.pkl
+      - src/prep_data.py
+      - data/cal_housing.csv

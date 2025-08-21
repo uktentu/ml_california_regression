@@ -1,0 +1,44 @@
+name: ci-cd
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-train:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Lint (basic)
+        run: python -m compileall -q .
+
+      # If using DVC with remote, uncomment:
+      - name: Set up DVC
+        run: pip install dvc && dvc pull
+
+      - name: Train
+        run: python src/train.py --model rf
+
+      - name: Evaluate
+        run: python src/evaluate.py
+
+      - name: Build Docker
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+
+      # Optional push to GHCR (needs GHCR_PAT or GITHUB_TOKEN with package perms)
+      - name: Login GHCR
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push Image
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: docker push ghcr.io/${{ github.repository }}:latest

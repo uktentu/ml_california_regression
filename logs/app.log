@@ -1,0 +1,3 @@
+2025-08-21 22:41:49,524 | INFO | train | Saved model to models/model.pkl | r2=0.8188, rmse=48721.97, mae=31435.28
+2025-08-21 22:41:51,182 | INFO | evaluate | Evaluation | R2=0.8188 RMSE=48721.97 MAE=31435.28
+2025-08-21 22:43:45,906 | INFO | api | pred=419067.26 | latency_ms=36.0

@@ -24,7 +24,7 @@ python src/evaluate.py
 uvicorn api.main:app --reload
 # Test
 curl -X POST http://127.0.0.1:8000/predict -H "Content-Type: application/json" \
- -d '{"longitude":-122.23,"latitude":37.88,"housing_median_age":41,"total_rooms":880,"total_bedrooms":129,"population":322,"households":126,"median_income":8.3252}'
+ -d '{"longitude":-122.23,"latitude":37.88,"housing_median_age":41,"total_rooms":880,"total_bedrooms":129,"population":322,"households":126,"median_income":8.3252,"ocean_proximity":"INLAND"}'
 
 docker build -t housing-api:latest .
 docker run -p 8000:8000 housing-api:latest

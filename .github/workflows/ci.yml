@@ -42,3 +42,9 @@ jobs:
       - name: Push Image
         if: ${{ github.ref == 'refs/heads/main' }}
         run: docker push ghcr.io/${{ github.repository }}:latest
+
+      - name: Deploy to Railway
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: railwayapp/railway-up@v2
+        with:
+          railwayToken: ${{ secrets.RAILWAY_TOKEN }}

@@ -37,7 +37,7 @@ jobs:
       # Optional push to GHCR (needs GHCR_PAT or GITHUB_TOKEN with package perms)
       - name: Login GHCR
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Push Image
         if: ${{ github.ref == 'refs/heads/main' }}

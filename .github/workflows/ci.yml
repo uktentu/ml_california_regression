@@ -42,13 +42,3 @@ jobs:
       - name: Push Image
         if: ${{ github.ref == 'refs/heads/main' }}
         run: docker push ghcr.io/${{ github.repository }}:latest
-
-      - name: Install Railway CLI
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: npm install -g @railway/cli
-
-      - name: Deploy to Railway
-        if: ${{ github.ref == 'refs/heads/main' }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up

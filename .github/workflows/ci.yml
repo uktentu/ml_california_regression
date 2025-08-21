@@ -43,8 +43,12 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: docker push ghcr.io/${{ github.repository }}:latest
 
+      - name: Install Railway CLI
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: npm install -g railway
+
       - name: Deploy to Railway
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: railwayapp/railway-up@v2
-        with:
-          railwayToken: ${{ secrets.RAILWAY_TOKEN }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway up

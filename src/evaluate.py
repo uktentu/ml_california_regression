@@ -9,10 +9,9 @@ def evaluate(model_path="models/model.pkl", data_path="data/cal_housing.csv"):
     X, y = get_xy(df)
     X_tr, X_te, y_tr, y_te = split(X, y)
 
-    bundle = joblib.load(model_path)
-    pipe = bundle["preproc"]; model = bundle["estimator"]
-    X_te = pipe.transform(X_te)
-    preds = model.predict(X_te)
+    # Load the full pipeline directly (not a dict with 'preproc' and 'estimator')
+    pipeline = joblib.load(model_path)
+    preds = pipeline.predict(X_te)
 
     rmse = float(np.sqrt(mean_squared_error(y_te, preds)))
     mae  = float(mean_absolute_error(y_te, preds))

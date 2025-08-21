@@ -1,3 +1,32 @@
 2025-08-21 22:41:49,524 | INFO | train | Saved model to models/model.pkl | r2=0.8188, rmse=48721.97, mae=31435.28
 2025-08-21 22:41:51,182 | INFO | evaluate | Evaluation | R2=0.8188 RMSE=48721.97 MAE=31435.28
 2025-08-21 22:43:45,906 | INFO | api | pred=419067.26 | latency_ms=36.0
+2025-08-21 22:56:40,936 | INFO | train | Saved model to models/model.pkl | r2=0.8188, rmse=48721.97, mae=31435.28
+2025-08-21 22:56:42,638 | INFO | evaluate | Evaluation | R2=0.8188 RMSE=48721.97 MAE=31435.28
+2025-08-21 22:56:42,947 | INFO | api | pred=419067.26 | latency_ms=30.8
+2025-08-21 22:59:50,009 | INFO | train | Saved model to models/model.pkl | r2=0.8188, rmse=48721.97, mae=31435.28
+2025-08-21 23:02:24,681 | INFO | train | Saved pipeline to models/model.pkl | r2=0.8170, rmse=48969.84
+2025-08-21 23:05:14,140 | INFO | train | Saved model locally: models/model.pkl | r2=0.8174, rmse=48915.42, mae=31563.09
+2025-08-21 23:05:59,328 | INFO | train | Saved model locally: models/model.pkl | r2=0.8170, rmse=48972.03, mae=31648.21
+2025-08-21 23:08:35,266 | INFO | train | Saved model locally: models/model.pkl | r2=0.8170, rmse=48966.17, mae=31733.17
+2025-08-21 23:09:13,737 | INFO | train | Saved model locally: models/model.pkl | r2=0.6254, rmse=70059.19, mae=50670.49
+2025-08-21 23:16:35,920 | INFO | train | Saved model locally: models/model.pkl | r2=0.8187, rmse=48743.71, mae=31501.78
+2025-08-21 23:21:32,367 | INFO | train | Saved model locally: models/model.pkl | r2=0.8188, rmse=48732.18, mae=31497.29
+2025-08-21 23:23:28,515 | INFO | train | Saved model locally: models/model.pkl | r2=0.8159, rmse=49112.06, mae=31691.98
+2025-08-21 23:29:07,944 | INFO | train | Saved model locally: models/model.pkl | r2=0.6254, rmse=70059.19, mae=50670.49
+2025-08-21 23:29:58,587 | INFO | train | Saved model locally: models/model.pkl | r2=0.6254, rmse=70059.19, mae=50670.49
+2025-08-21 23:31:52,268 | INFO | train | Saved model locally: models/model.pkl | r2=0.8151, rmse=49226.37, mae=31681.28
+2025-08-21 23:33:15,598 | INFO | evaluate | Evaluation | R2=0.8151 RMSE=49226.37 MAE=31681.28
+2025-08-21 23:33:23,767 | INFO | evaluate | Evaluation | R2=0.8151 RMSE=49226.37 MAE=31681.28
+2025-08-21 23:33:52,210 | INFO | evaluate | Evaluation | R2=0.8151 RMSE=49226.37 MAE=31681.28
+2025-08-21 23:35:08,819 | INFO | api | pred=423664.22 | latency_ms=5.0
+2025-08-21 23:37:10,024 | INFO | train | Saved model locally: models/model.pkl | r2=0.8168, rmse=48998.99, mae=31692.68
+2025-08-21 23:37:11,592 | INFO | evaluate | Evaluation | R2=0.8168 RMSE=48998.99 MAE=31692.68
+2025-08-21 23:39:21,215 | INFO | api | pred=423557.29 | latency_ms=9.3
+2025-08-21 23:45:15,803 | INFO | api | pred=423557.29 | latency_ms=7.5
+2025-08-21 23:47:54,148 | INFO | api | pred=423557.29 | latency_ms=6.1
+2025-08-21 23:48:43,252 | INFO | api | pred=423557.29 | latency_ms=3.5
+2025-08-21 23:50:17,823 | INFO | api | pred=423557.29 | latency_ms=3.9
+2025-08-21 23:50:32,640 | INFO | api | pred=423557.29 | latency_ms=3.4
+2025-08-21 23:50:33,105 | INFO | api | pred=423557.29 | latency_ms=3.4
+2025-08-21 23:50:33,587 | INFO | api | pred=423557.29 | latency_ms=3.7

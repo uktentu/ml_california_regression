@@ -16,7 +16,7 @@ git add data/.gitignore data/cal_housing.csv.dvc dvc.yaml
 git commit -m "track dataset with DVC"
 # set a remote: dvc remote add -d origin <your-remote> && dvc push
 
-mlflow ui --backend-store-uri sqlite:///mlflow.db
+mlflow ui --backend-store-uri ./mlruns
 
 python src/train.py --model rf
 python src/evaluate.py

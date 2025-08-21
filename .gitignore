@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.venv/
+env/
+venv/
+*.env
+*.DS_Store
+
+# Jupyter
+.ipynb_checkpoints
+
+# VSCode
+.vscode/
+
+# Data & Models
+data/
+models/
+*.db
+mlruns/
+mlflow.db
+
+# DVC
+*.dvc
+.dvc/
+.cache/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Docker
+*.pid
+
+# Test & Coverage
+htmlcov/
+.tox/
+.coverage
+.cache
+pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Logs
+*.log
+
+# Misc
+*.bak
+*.swp
+*.tmp

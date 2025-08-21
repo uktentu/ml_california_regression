@@ -1,61 +1,86 @@
-import argparse, json, joblib, numpy as np
+import argparse
+import numpy as np
+import pandas as pd
 from pathlib import Path
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-import mlflow, mlflow.sklearn
+import mlflow
+import mlflow.sklearn
 
 from prep_data import load_data, get_xy, make_pipeline, split
-from utils import get_logger, get_db
+from utils import get_logger
 
+# Define available models
 MODELS = {
-    "linreg": (LinearRegression, {"n_jobs": None}),
-    "rf": (RandomForestRegressor, {"n_estimators": 300, "max_depth": None, "random_state": 42, "n_jobs": -1}),
+    "linreg": LinearRegression,
+    "rf": RandomForestRegressor,
 }
+
 
 def train(model_name="linreg", data_path="data/cal_housing.csv", models_dir="models"):
     logger = get_logger("train")
-    conn = get_db(); cur = conn.cursor()
     Path(models_dir).mkdir(parents=True, exist_ok=True)
 
+    # Load data
     df = load_data(data_path)
     X, y = get_xy(df)
     X_tr, X_te, y_tr, y_te = split(X, y)
 
-    pipe = make_pipeline()
-    X_tr = pipe.fit_transform(X_tr)
-    X_te = pipe.transform(X_te)
+    # Build pipeline (preprocessing + model)
+    ModelCls = MODELS[model_name]
+    estimator = ModelCls()
+    preproc = make_pipeline()
+    pipeline = Pipeline(steps=[
+        ("preproc", preproc),
+        ("model", estimator)
+    ])
 
-    cls, default_params = MODELS[model_name]
-    model = cls(**{k:v for k,v in default_params.items() if k in cls().__dict__ or True})  # tolerant
+    # Ensure experiment exists or create it
+    experiment_name = "housing-regression"
+    experiment = mlflow.get_experiment_by_name(experiment_name)
+    if experiment is None:
+        experiment_id = mlflow.create_experiment(experiment_name)
+    else:
+        experiment_id = experiment.experiment_id
+    mlflow.set_experiment(experiment_name)
 
-    with mlflow.start_run():
-        mlflow.log_param("model_name", model_name)
-        mlflow.log_params(default_params)
+    with mlflow.start_run(experiment_id=experiment_id):
+        # Fit model
+        pipeline.fit(X_tr, y_tr)
+        preds = pipeline.predict(X_te)
 
-        model.fit(X_tr, y_tr)
-        preds = model.predict(X_te)
-
+        # Compute metrics
         rmse = float(np.sqrt(mean_squared_error(y_te, preds)))
         mae  = float(mean_absolute_error(y_te, preds))
         r2   = float(r2_score(y_te, preds))
 
+        # Log params + metrics
+        mlflow.log_param("model", model_name)
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("mae", mae)
         mlflow.log_metric("r2", r2)
 
-        # persist artifacts locally AND in MLflow
-        bundle = {"preproc": pipe, "estimator": model}
-        out_path = Path(models_dir) / "model.pkl"
-        joblib.dump(bundle, out_path)
-        mlflow.sklearn.log_model(model, artifact_path="model")
-        logger.info(f"Saved model to {out_path} | r2={r2:.4f}, rmse={rmse:.2f}, mae={mae:.2f}")
+        # Use first row as input example
+        if isinstance(X_tr, pd.DataFrame):
+            input_example = X_tr.iloc[:1]
+        else:
+            input_example = pd.DataFrame(X_tr[:1])
 
-        cur.execute(
-            "INSERT INTO train_runs(model, r2, rmse, mae, params) VALUES(?,?,?,?,?)",
-            (model_name, r2, rmse, mae, json.dumps(default_params))
+        # Log full pipeline to MLflow Model Registry
+        mlflow.sklearn.log_model(
+            sk_model=pipeline,
+            artifact_path="model",
+            input_example=input_example,
+            registered_model_name="housing_model"
         )
-        conn.commit()
+
+        # Also save locally for API fallback
+        out_path = Path(models_dir) / "model.pkl"
+        import joblib
+        joblib.dump(pipeline, out_path)
+        logger.info(f"Saved model locally: {out_path} | r2={r2:.4f}, rmse={rmse:.2f}, mae={mae:.2f}")
 
     print(f"✅ Trained {model_name} | R2={r2:.4f} | RMSE={rmse:.2f} | MAE={mae:.2f}")
 

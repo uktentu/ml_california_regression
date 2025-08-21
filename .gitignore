@@ -55,3 +55,7 @@ coverage.xml
 *.bak
 *.swp
 *.tmp
+
+#logs and databases
+logs/*.log
+db/*db
